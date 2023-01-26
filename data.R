@@ -16,7 +16,8 @@ mkdir("data")
 ## Read catch data, convert to tibble (long format)
 catch <- read.taf("bootstrap/data/catch.csv")
 catch$Total <- NULL  # not used, not a stock
-catch <- pivot_longer(catch, !Year, "stock", values_to="capture")
+catch <- pivot_longer(data=catch, cols=!Year,
+                      names_to="stock", values_to="capture")
 names(catch) <- tolower(names(catch))
 
 ## Plot catch
@@ -57,7 +58,8 @@ ggsave("data/catch_relative.png", width=12, height=6)
 
 ## Read effort data, combine catch and effort data
 effort <- read.taf("bootstrap/data/effort.csv")
-effort <- pivot_longer(effort, !Year, "stock", values_to="effort")
+effort <- pivot_longer(data=effort, cols=!Year,
+                       names_to="stock", values_to="effort")
 names(effort) <- tolower(names(effort))
 catch_effort <- addEffort(catch, effort, same.effort=TRUE)
 
